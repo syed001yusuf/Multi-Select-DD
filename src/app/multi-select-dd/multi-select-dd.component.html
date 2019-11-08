@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="usr">Multi Select Dropdown</label>
+            <div class="input-group bord-rad" (click)="arrowClick()">
+                <div class="form-group mb-0 cur-pointer">
+                    <p class="mb-0 cust-plachold" *ngIf="selectedItems.length == 0">Select Multiple Cities...
+                    </p>
+                    <p class="badge-custom-pad mb-0" *ngIf="selectedItems.length > 0">
+                        <span class="badge badge-primary mb-0 mr-1" *ngFor="let item of selectedItems; let i=index;">
+                            <span *ngIf="i < 3">{{item.text}}
+                                <span class="pl-1" (click)="removeItem(i, $event)">
+                                    <i class="fa fa-remove"></i>
+                                </span>
+                        </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="input-group-text bg-white arrow-sec">
+                    <span *ngIf="selectedItems.length > 3" class="extra-count"><b>+{{selectedItems.length - 3}}</b></span>
+                    <i class="fa" [ngClass]="{'fa-arrow-up' : dropDownOpened, 'fa-arrow-down':!dropDownOpened}"></i>
+                </div>
+            </div>
+            <div class="form-group border border-secondary custom-height" *ngIf="dropDownOpened">
+                <div *ngIf="settings.allowSearchFilter">
+                    <input type="text" class="form-control search-box" (keyup)="searchCity(searchText)" [(ngModel)]="searchText" placeholder="Search City">
+                </div>
+                <div class="checkbox border-secondary select-items-border" *ngIf="settings.showSelectAll">
+                    <label class="m-0 custom-padding">
+                        <input type="checkbox" name="selectAll" [(ngModel)]="isAllSelected" (click)="selectAll()"
+                            class="checkbox-style">{{settings.selectAllText}}</label>
+                </div>
+                <div class="checkbox border-secondary select-items-border" *ngFor="let item of tempData;let i=index;">
+                    <label class="m-0 custom-padding">
+                        <input id="{{item.id}}" (change)="checkValue(item)" type="checkbox" value="{{item.id}}"
+                            [(ngModel)]="item.checked" name="{{item.text}}" class="checkbox-style" /> {{item.text}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 settings-style">
+            <label class="mb-1"><b>Multiple Dropdown Settings:</b></label>
+            <p class="m-0 custom-padding">
+                <input id="searchFilterID" type="checkbox" [(ngModel)]="settings.allowSearchFilter" name="searchFilter" class="checkbox-style" />Show Search filter
+            </p>
+            <p class="m-0 custom-padding">
+                <input id="searchFilterID" type="checkbox" [(ngModel)]="settings.showSelectAll" name="searchFilter" class="checkbox-style" />Show Select All
+            </p>
+            <label class="mb-0 mt-2">Set text for Select All Checkbox:</label>
+            <input type="text" class="form-control" placeholder="Select All text.." [(ngModel)]="settings.selectAllText" />
+            <p *ngIf="selectedItems.length > 0">Selected Items:</p>
+            <p *ngIf="selectedItems.length > 0">{{selectedItems | json}}</p>
+        </div>
+    </div>
+</div>
